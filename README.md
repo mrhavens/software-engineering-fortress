@@ -1,5 +1,10 @@
 # Software Engineering Fortress 🤖
 
+![Banner](assets/banner.png)
+
+> *The operational protocols of the Sovereign Canon. Immutable GitOps workflows, zero-trust security pipelines, and the mechanical rules engine for the Sovereign state.*
+
+
 ## Multi-Agent AI Software Engineering Methodology
 
 > *How do you build software when the developers are AI agents? What roles? What workflows? What quality metrics?*
