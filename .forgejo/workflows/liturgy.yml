@@ -1,0 +1,48 @@
+name: Automated Liturgy (Ontological Validation)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-seed-packets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Checkout Epistemic Tooling
+        uses: actions/checkout@v4
+        with:
+          repository: mrhavens/knowledge-engineering-fortress
+          path: .knowledge-engineering-fortress
+
+      - name: Validate Topological States
+        run: |
+          echo "Initiating Epistemic Validation..."
+          # Find all JSON-LD files in the repository
+          FILES=$(find . -name "*.jsonld" -not -path "./.knowledge-engineering-fortress/*")
+          
+          if [ -z "$FILES" ]; then
+            echo "No Seed Packets found. Liturgy complete."
+            exit 0
+          fi
+          
+          for file in $FILES; do
+            echo "Validating: $file"
+            python3 .knowledge-engineering-fortress/src/validator.py --file "$file" || {
+              echo "::error:: Ontological corruption detected in $file. Build Failed."
+              exit 1
+            }
+          done
+          
+          echo "All Seed Packets phase-locked. Committing to GitField."
